@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo | Diretório Acadêmico Karen Adami</title>
-    
+
     <!-- Tailwind CSS para estilização -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- FontAwesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -26,6 +26,8 @@
                         brand: {
                             50: '#fef2f2',
                             100: '#fee2e2',
+                            200: '#fecaca',
+                            400: '#f87171',
                             500: '#ef4444',
                             600: '#dc2626', // Vermelho principal
                             700: '#b91c1c',
@@ -42,11 +44,11 @@
             font-family: 'Inter', sans-serif;
             background-color: #fafafa;
         }
-        
+
         .product-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
         /* Efeito de hover só em dispositivos com mouse (evita o card "travado" levantado após um toque no celular) */
         @media (hover: hover) {
             .product-card:hover {
@@ -56,6 +58,13 @@
         }
 
         .filter-btn.active {
+            background-color: #dc2626;
+            color: white;
+            border-color: #dc2626;
+        }
+
+        /* Botões de opção (tamanho) selecionados */
+        .size-btn.active {
             background-color: #dc2626;
             color: white;
             border-color: #dc2626;
@@ -169,7 +178,7 @@
                 margin-bottom: 24px;
                 gap: 16px;
             }
-            /* Filtros rolam de ponta a ponta da tela */
+            /* Abas rolam de ponta a ponta da tela */
             #produtos .overflow-x-auto {
                 margin-left: -16px;
                 margin-right: -16px;
@@ -190,46 +199,6 @@
             }
             #productsGrid .product-card {
                 border-radius: 14px;
-            }
-            #productsGrid .product-card img {
-                height: 170px;
-            }
-            #productsGrid .product-card > span.absolute {
-                top: 8px;
-                right: 8px;
-                font-size: 9px;
-                padding: 3px 6px;
-            }
-            #productsGrid .product-card .p-5 {
-                padding: 12px;
-            }
-            #productsGrid .product-card .text-xs {
-                font-size: 10px;
-            }
-            #productsGrid .product-card h3 {
-                font-size: 14px;
-                margin-bottom: 0;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-            #productsGrid .product-card .mt-auto {
-                padding-top: 8px;
-            }
-            #productsGrid .product-card .text-xl {
-                font-size: 16px;
-            }
-            /* O botão redondo do carrinho é redundante com "Tenho interesse" — some no celular */
-            #productsGrid .product-card .mt-auto button {
-                display: none;
-            }
-            #productsGrid .product-card > .p-5 > button {
-                margin-top: 10px;
-                padding: 8px;
-                font-size: 13px;
-                border-radius: 10px;
             }
 
             /* --- Sugestões --- */
@@ -303,9 +272,6 @@
             #productsGrid {
                 grid-template-columns: minmax(0, 1fr);
             }
-            #productsGrid .product-card img {
-                height: 220px;
-            }
         }
     </style>
 </head>
@@ -317,8 +283,7 @@
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="#" class="flex items-center gap-3 group">
-                        <!-- Utilizando o arquivo solicitado -->
+                    <a href="#inicio" class="flex items-center gap-3 group">
                         <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center p-1 overflow-hidden group-hover:scale-105 transition-transform">
                              <img src="logo preta daka vetor (1).svg" alt="Logo DAKA" class="w-full h-full object-contain">
                         </div>
@@ -339,7 +304,7 @@
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-brand-600 focus:outline-none">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-brand-600 focus:outline-none" aria-label="Abrir menu">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
@@ -357,6 +322,9 @@
         </div>
     </header>
 
+    <!-- ===================== VISÃO: PÁGINA INICIAL / CATÁLOGO ===================== -->
+    <div id="homeView">
+
     <!-- Hero Section -->
     <section id="inicio" class="relative bg-white overflow-hidden">
         <div class="max-w-7xl mx-auto">
@@ -368,7 +336,7 @@
                             <span class="block text-brand-600 xl:inline">seu curso.</span>
                         </h1>
                         <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                            Descubra nossa coleção de produtos oficiais do Diretório Acadêmico Karen Adami. Qualidade, estilo e orgulho de pertencer em cada detalhe.
+                            Produtos oficiais do Diretório Acadêmico Karen Adami. Compre a unidade avulsa ou entre na lista da pré-venda coletiva e pague menos.
                         </p>
                         <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                             <div class="rounded-md shadow">
@@ -387,7 +355,7 @@
             </div>
         </div>
         <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-brand-50 flex items-center justify-center p-12 hidden lg:flex rounded-l-3xl">
-            <!-- Representação abstrata/placeholder bonita para o Hero -->
+            <!-- Representação abstrata/placeholder para o Hero -->
             <div class="grid grid-cols-2 gap-4 w-full h-full opacity-80 transform rotate-3">
                 <div class="bg-brand-200 rounded-3xl h-64 mt-12 animate-pulse"></div>
                 <div class="bg-brand-600 rounded-3xl h-64"></div>
@@ -400,36 +368,31 @@
     <!-- Seção de Produtos -->
     <section id="produtos" class="py-16 bg-gray-50 flex-grow">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
+
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Nosso Catálogo</h2>
                 <div class="w-24 h-1 bg-brand-600 mx-auto mt-4 rounded-full"></div>
             </div>
 
-            <!-- Barra de Pesquisa e Filtros -->
-            <div class="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
-                
+            <!-- Barra de Pesquisa e Abas -->
+            <div class="mb-10 flex flex-col lg:flex-row justify-between items-center gap-6">
+
                 <!-- Pesquisa -->
-                <div class="w-full md:w-1/3 relative">
+                <div class="w-full lg:w-1/4 relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-search text-gray-400"></i>
                     </div>
                     <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-full leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition-shadow" placeholder="Buscar produtos...">
                 </div>
 
-                <!-- Filtros de Categoria -->
-                <div class="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0">
-                    <div class="flex space-x-2 min-w-max" id="categoryFilters">
-                        <button class="filter-btn active px-5 py-2 rounded-full border border-gray-300 text-sm font-medium transition-colors" data-filter="todos">Todos</button>
-                        <button class="filter-btn px-5 py-2 rounded-full border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors" data-filter="vestuario">Vestuário</button>
-                        <button class="filter-btn px-5 py-2 rounded-full border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors" data-filter="acessorios">Acessórios</button>
-                        <button class="filter-btn px-5 py-2 rounded-full border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors" data-filter="papelaria">Papelaria</button>
-                    </div>
+                <!-- Abas de Categoria (geradas pelo JavaScript a partir da lista "categories") -->
+                <div class="w-full lg:w-auto overflow-x-auto no-scrollbar pb-2 lg:pb-0">
+                    <div class="flex space-x-2 min-w-max" id="categoryFilters" role="tablist"></div>
                 </div>
             </div>
 
             <!-- Grid de Produtos -->
-            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Os produtos serão injetados aqui pelo JavaScript -->
             </div>
 
@@ -437,7 +400,7 @@
             <div id="noProductsMsg" class="hidden text-center py-12">
                 <i class="fas fa-box-open text-4xl text-gray-300 mb-4"></i>
                 <h3 class="text-lg font-medium text-gray-900">Nenhum produto encontrado</h3>
-                <p class="text-gray-500 mt-1">Tente ajustar sua pesquisa ou filtros.</p>
+                <p class="text-gray-500 mt-1">Tente ajustar sua pesquisa ou trocar de aba.</p>
             </div>
         </div>
     </section>
@@ -446,30 +409,30 @@
     <section id="sugestoes" class="py-16 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-brand-50 rounded-3xl shadow-sm overflow-hidden flex flex-col md:flex-row">
-                
+
                 <div class="md:w-2/5 bg-brand-600 p-10 text-white flex flex-col justify-center">
                     <h3 class="text-3xl font-bold mb-4">Tem alguma ideia?</h3>
                     <p class="text-brand-100 mb-6">Queremos ouvir você! Sentiu falta de algum produto? Tem uma ideia de estampa legal? Mande sua sugestão para o DAKA.</p>
                     <i class="fas fa-lightbulb text-6xl text-brand-400 opacity-50 mt-auto"></i>
                 </div>
-                
+
                 <div class="md:w-3/5 p-10">
                     <form id="suggestionForm" class="space-y-6">
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700">Seu Nome</label>
                             <input type="text" id="name" required class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-brand-500 focus:border-brand-500">
                         </div>
-                        
+
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700">Seu E-mail Institucional (Opcional)</label>
                             <input type="email" id="email" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-brand-500 focus:border-brand-500">
                         </div>
-                        
+
                         <div>
                             <label for="suggestion" class="block text-sm font-medium text-gray-700">Sua Sugestão</label>
                             <textarea id="suggestion" rows="4" required placeholder="Ex: Adoraria ver moletons com zíper..." class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-brand-500 focus:border-brand-500"></textarea>
                         </div>
-                        
+
                         <div>
                             <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors">
                                 Enviar Sugestão <i class="fas fa-paper-plane ml-2 mt-1"></i>
@@ -482,11 +445,21 @@
         </div>
     </section>
 
+    </div>
+    <!-- ===================== FIM DA VISÃO INICIAL ===================== -->
+
+    <!-- ===================== VISÃO: PÁGINA DO PRODUTO ===================== -->
+    <section id="productView" class="hidden flex-grow bg-gray-50 py-8 sm:py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8" id="productPage">
+            <!-- Conteúdo injetado pelo JavaScript (renderProductPage) -->
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer id="contato" class="bg-gray-900 text-white border-t-4 border-brand-600 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
+
                 <!-- Info -->
                 <div class="col-span-1">
                     <div class="flex items-center gap-3 mb-4">
@@ -497,7 +470,7 @@
                     </div>
                     <p class="text-gray-400 text-sm mb-4">Diretório Acadêmico Karen Adami. Representando os estudantes com dedicação, promovendo integração e lutando por um ensino de qualidade.</p>
                 </div>
-                
+
                 <!-- Links -->
                 <div class="col-span-1">
                     <h4 class="text-lg font-bold mb-4 uppercase tracking-wider text-gray-200">Links Rápidos</h4>
@@ -507,7 +480,7 @@
                         <li><a href="#sugestoes" class="hover:text-brand-500 transition-colors">Ouvidoria / Sugestões</a></li>
                     </ul>
                 </div>
-                
+
                 <!-- Contato -->
                 <div class="col-span-1">
                     <h4 class="text-lg font-bold mb-4 uppercase tracking-wider text-gray-200">Contato</h4>
@@ -534,7 +507,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="border-t border-gray-800 mt-12 pt-8 text-sm text-center text-gray-500">
                 <p>&copy; 2026 Diretório Acadêmico Karen Adami. Todos os direitos reservados.</p>
             </div>
@@ -545,15 +518,15 @@
     <div id="customModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
-        
+
         <!-- Modal Content -->
         <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all p-6 scale-95 opacity-0" id="modalBox">
             <div class="absolute top-4 right-4">
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Fechar">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            
+
             <div class="text-center mt-2">
                 <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-brand-100 mb-4" id="modalIconContainer">
                     <i id="modalIcon" class="fas fa-check text-2xl text-brand-600"></i>
@@ -563,7 +536,7 @@
                     <p class="text-sm text-gray-500" id="modalMessage">Mensagem do modal aqui.</p>
                 </div>
             </div>
-            
+
             <div class="mt-6 flex justify-center">
                 <button onclick="closeModal()" class="inline-flex justify-center w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-white bg-brand-600 border border-transparent rounded-lg hover:bg-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-500 transition-colors shadow-sm">
                     Entendi
@@ -573,90 +546,180 @@
     </div>
 
     <script>
-        // --- Dados dos Produtos ---
-        const products = [
-            {
-                id: 1,
-                name: "Moletom Canguru DAKA",
-                price: 149.90,
-                category: "vestuario",
-                image: "https://placehold.co/400x450/f3f4f6/dc2626?text=Moletom",
-                tag: "Mais Vendido"
-            },
-            {
-                id: 2,
-                name: "Camiseta Clássica Branca",
-                price: 45.00,
-                category: "vestuario",
-                image: "https://placehold.co/400x450/f3f4f6/dc2626?text=Camiseta",
-                tag: "Novo"
-            },
-            {
-                id: 3,
-                name: "Caneca de Cerâmica 325ml",
-                price: 35.00,
-                category: "acessorios",
-                image: "https://placehold.co/400x450/f3f4f6/dc2626?text=Caneca",
-                tag: ""
-            },
-            {
-                id: 4,
-                name: "Tirante para Caneca Personalizado",
-                price: 15.00,
-                category: "acessorios",
-                image: "https://placehold.co/400x450/f3f4f6/dc2626?text=Tirante",
-                tag: ""
-            },
-            {
-                id: 5,
-                name: "Caderno Universitário Capa Dura",
-                price: 25.00,
-                category: "papelaria",
-                image: "https://placehold.co/400x450/f3f4f6/dc2626?text=Caderno",
-                tag: ""
-            },
-            {
-                id: 6,
-                name: "Kit de Adesivos (5 und)",
-                price: 10.00,
-                category: "papelaria",
-                image: "https://placehold.co/400x450/f3f4f6/dc2626?text=Adesivos",
-                tag: ""
-            },
-            {
-                id: 7,
-                name: "Samba-canção / Short",
-                price: 40.00,
-                category: "vestuario",
-                image: "https://placehold.co/400x450/f3f4f6/dc2626?text=Short",
-                tag: ""
-            },
-            {
-                id: 8,
-                name: "Ecobag DAKA",
-                price: 30.00,
-                category: "acessorios",
-                image: "https://placehold.co/400x450/f3f4f6/dc2626?text=Ecobag",
-                tag: ""
-            }
+        // =====================================================================
+        // CONFIGURAÇÕES GERAIS — edite aqui
+        // =====================================================================
+        const CONFIG = {
+            // Número de WhatsApp do DAKA para a compra avulsa (só dígitos, com DDI e DDD).
+            // Ex: '5553999999999'. Enquanto estiver vazio, o site mostra um aviso em vez de abrir o WhatsApp.
+            whatsapp: '',
+
+            // Endereço que recebe as inscrições da lista de interesse (ex: um Google Apps Script
+            // ligado a uma planilha). Enquanto estiver vazio, a inscrição fica salva só no navegador
+            // da pessoa — ou seja, a diretoria NÃO recebe os dados ainda.
+            interestEndpoint: '',
+        };
+
+        // =====================================================================
+        // CATEGORIAS — cada uma vira uma aba no catálogo
+        // =====================================================================
+        const categories = [
+            { id: 'roupas',     label: 'Roupas' },
+            { id: 'acessorios', label: 'Acessórios' },
         ];
 
-        // --- Renderização e Lógica ---
+        // =====================================================================
+        // PRODUTOS
+        //  - slug: identificador usado no endereço da página (#/produto/slug)
+        //  - image: caminho da foto (ex: 'img/moletom.jpg'). Vazio = imagem provisória
+        //  - priceUnit: preço da unidade avulsa (mais caro). null = "a definir"
+        //  - priceGroup: preço na pré-venda coletiva (mais barato). null = "a definir"
+        //  - minGroup: nº mínimo de pessoas na lista para fazer o pedido coletivo
+        //  - interested: nº de pessoas já na lista (atualize manualmente por enquanto)
+        //  - sizes: tamanhos disponíveis (deixe [] se o produto não tem tamanho)
+        // Vários produtos podem ter a mesma categoria (ex: duas estampas de camisa).
+        // =====================================================================
+        const products = [
+            {
+                slug: 'moletom',
+                name: 'Moletom DAKA',
+                category: 'roupas',
+                description: 'Moletom oficial do Diretório Acadêmico Karen Adami. Detalhes de tecido, cores e estampa em breve.',
+                image: '',
+                priceUnit: null,
+                priceGroup: null,
+                minGroup: 20,
+                interested: 0,
+                sizes: ['P', 'M', 'G', 'GG', 'XG'],
+            },
+            {
+                slug: 'camisa',
+                name: 'Camisa DAKA',
+                category: 'roupas',
+                description: 'Camisa oficial do Diretório Acadêmico Karen Adami. Detalhes de tecido, cores e estampa em breve.',
+                image: '',
+                priceUnit: null,
+                priceGroup: null,
+                minGroup: 20,
+                interested: 0,
+                sizes: ['P', 'M', 'G', 'GG', 'XG'],
+            },
+            {
+                slug: 'caneca',
+                name: 'Caneca DAKA',
+                category: 'acessorios',
+                description: 'Caneca oficial do Diretório Acadêmico Karen Adami. Detalhes de material, capacidade e arte em breve.',
+                image: '',
+                priceUnit: null,
+                priceGroup: null,
+                minGroup: 20,
+                interested: 0,
+                sizes: [],
+            },
+            {
+                slug: 'cuia',
+                name: 'Cuia DAKA',
+                category: 'acessorios',
+                description: 'Cuia personalizada do Diretório Acadêmico Karen Adami. Detalhes de material e gravação em breve.',
+                image: '',
+                priceUnit: null,
+                priceGroup: null,
+                minGroup: 15,
+                interested: 0,
+                sizes: [],
+            },
+            {
+                slug: 'adesivo-pequeno',
+                name: 'Adesivo Pequeno',
+                category: 'acessorios',
+                description: 'Adesivo pequeno do DAKA, ideal para notebook, garrafinha e caderno. Medidas e artes em breve.',
+                image: '',
+                priceUnit: null,
+                priceGroup: null,
+                minGroup: 50,
+                interested: 0,
+                sizes: [],
+            },
+            {
+                slug: 'adesivo-grande',
+                name: 'Adesivo Grande',
+                category: 'acessorios',
+                description: 'Adesivo grande do DAKA. Medidas e artes em breve.',
+                image: '',
+                priceUnit: null,
+                priceGroup: null,
+                minGroup: 30,
+                interested: 0,
+                sizes: [],
+            },
+        ];
+
+        // =====================================================================
+        // Utilitários
+        // =====================================================================
+        const formatPrice = (price) =>
+            price == null ? 'A definir' : price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        const getCategory = (id) => categories.find(c => c.id === id);
+
+        const getImage = (product) =>
+            product.image || `https://placehold.co/600x600/fef2f2/dc2626?text=${encodeURIComponent(product.name)}`;
+
+        // Desconto da pré-venda em relação à unidade (só quando os dois preços existem)
+        const getDiscount = (product) => {
+            if (product.priceUnit == null || product.priceGroup == null || product.priceUnit <= 0) return 0;
+            return Math.round((1 - product.priceGroup / product.priceUnit) * 100);
+        };
+
+        // Inscrições feitas neste navegador (para mostrar "você já está na lista")
+        const STORAGE_KEY = 'daka_interesses';
+        const loadSignups = () => {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+            catch { return []; }
+        };
+        const saveSignup = (signup) => {
+            try {
+                const all = loadSignups();
+                all.push(signup);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+            } catch { /* armazenamento indisponível: segue sem lembrar */ }
+        };
+        const hasSignedUp = (slug) => loadSignups().some(s => s.produto === slug);
+
+        const getInterestedCount = (product) => product.interested + (hasSignedUp(product.slug) ? 1 : 0);
+
+        // =====================================================================
+        // Catálogo (abas + grade)
+        // =====================================================================
         const productsGrid = document.getElementById('productsGrid');
         const noProductsMsg = document.getElementById('noProductsMsg');
         const searchInput = document.getElementById('searchInput');
-        const filterBtns = document.querySelectorAll('.filter-btn');
+        const categoryFilters = document.getElementById('categoryFilters');
 
-        // Formata Moeda
-        const formatPrice = (price) => {
-            return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        let currentCategory = 'todos';
+        let currentSearch = '';
+
+        const renderTabs = () => {
+            const tabs = [{ id: 'todos', label: 'Todos' }, ...categories];
+            categoryFilters.innerHTML = tabs.map(tab => `
+                <button role="tab" data-filter="${tab.id}" aria-selected="${tab.id === currentCategory}"
+                    class="filter-btn ${tab.id === currentCategory ? 'active' : 'bg-white text-gray-700 hover:bg-gray-50'} px-5 py-2 rounded-full border border-gray-300 text-sm font-medium transition-colors">
+                    ${tab.label}
+                </button>
+            `).join('');
+
+            categoryFilters.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentCategory = btn.dataset.filter;
+                    renderTabs();
+                    filterAndRender();
+                });
+            });
         };
 
-        // Renderiza os produtos na tela
         const renderProducts = (productsToRender) => {
-            productsGrid.innerHTML = '';
-
             if (productsToRender.length === 0) {
+                productsGrid.innerHTML = '';
                 productsGrid.classList.add('hidden');
                 noProductsMsg.classList.remove('hidden');
                 return;
@@ -665,77 +728,355 @@
             productsGrid.classList.remove('hidden');
             noProductsMsg.classList.add('hidden');
 
-            productsToRender.forEach(product => {
-                const tagHtml = product.tag 
-                    ? `<span class="absolute top-3 right-3 bg-brand-600 text-white text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide z-10">${product.tag}</span>` 
+            productsGrid.innerHTML = productsToRender.map(product => {
+                const discount = getDiscount(product);
+                const discountTag = discount > 0
+                    ? `<span class="absolute top-3 right-3 bg-brand-600 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide z-10">Até ${discount}% off</span>`
                     : '';
 
-                const card = `
-                    <div class="product-card bg-white rounded-2xl overflow-hidden border border-gray-100 flex flex-col h-full relative group">
-                        ${tagHtml}
-                        <div class="aspect-w-4 aspect-h-5 bg-gray-100 relative overflow-hidden">
-                            <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                return `
+                    <a href="#/produto/${product.slug}" class="product-card bg-white rounded-2xl overflow-hidden border border-gray-100 flex flex-col h-full relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500">
+                        ${discountTag}
+                        <div class="aspect-square bg-gray-100 relative overflow-hidden">
+                            <img src="${getImage(product)}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
                         </div>
-                        <div class="p-5 flex flex-col flex-grow">
-                            <span class="text-xs text-brand-600 font-semibold uppercase tracking-wider mb-1 block">${product.category}</span>
-                            <h3 class="text-lg font-bold text-gray-900 leading-tight mb-2">${product.name}</h3>
-                            <div class="mt-auto pt-4 flex items-center justify-between">
-                                <span class="text-xl font-extrabold text-gray-900">${formatPrice(product.price)}</span>
-                                <button onclick="handleInterest('${product.name}')" class="w-10 h-10 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors focus:outline-none" aria-label="Tenho interesse">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
+                        <div class="p-3 sm:p-5 flex flex-col flex-grow">
+                            <span class="text-[10px] sm:text-xs text-brand-600 font-semibold uppercase tracking-wider mb-1 block">${getCategory(product.category).label}</span>
+                            <h3 class="text-sm sm:text-lg font-bold text-gray-900 leading-tight">${product.name}</h3>
+                            <div class="mt-auto pt-3 sm:pt-4 space-y-1 text-xs sm:text-sm">
+                                <div class="flex justify-between gap-2">
+                                    <span class="text-gray-500">Pré-venda</span>
+                                    <span class="font-extrabold text-brand-600">${formatPrice(product.priceGroup)}</span>
+                                </div>
+                                <div class="flex justify-between gap-2">
+                                    <span class="text-gray-500">Unidade</span>
+                                    <span class="font-semibold text-gray-900">${formatPrice(product.priceUnit)}</span>
+                                </div>
                             </div>
-                            <button onclick="handleInterest('${product.name}')" class="mt-4 w-full bg-white border-2 border-gray-200 text-gray-800 hover:border-brand-600 hover:text-brand-600 font-semibold py-2 px-4 rounded-xl transition-colors">
-                                Tenho interesse
-                            </button>
+                            <span class="mt-3 sm:mt-4 w-full text-center bg-white border-2 border-gray-200 text-gray-800 group-hover:border-brand-600 group-hover:text-brand-600 font-semibold py-2 px-4 rounded-xl transition-colors text-sm">
+                                Ver opções
+                            </span>
                         </div>
-                    </div>
+                    </a>
                 `;
-                productsGrid.innerHTML += card;
-            });
+            }).join('');
         };
 
-        // Filtro Inicial
-        let currentCategory = 'todos';
-        let currentSearch = '';
-
         const filterAndRender = () => {
+            const search = currentSearch.trim().toLowerCase();
             const filtered = products.filter(product => {
                 const matchesCategory = currentCategory === 'todos' || product.category === currentCategory;
-                const matchesSearch = product.name.toLowerCase().includes(currentSearch.toLowerCase());
+                const matchesSearch = product.name.toLowerCase().includes(search);
                 return matchesCategory && matchesSearch;
             });
             renderProducts(filtered);
         };
 
-        // Eventos de Filtro de Categoria
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Atualiza visual dos botões
-                filterBtns.forEach(b => {
-                    b.classList.remove('active', 'bg-brand-600', 'text-white', 'border-brand-600');
-                    b.classList.add('bg-white', 'text-gray-700');
-                });
-                const clickedBtn = e.target;
-                clickedBtn.classList.remove('bg-white', 'text-gray-700');
-                clickedBtn.classList.add('active', 'bg-brand-600', 'text-white', 'border-brand-600');
-
-                // Atualiza estado e renderiza
-                currentCategory = clickedBtn.getAttribute('data-filter');
-                filterAndRender();
-            });
-        });
-
-        // Evento de Pesquisa
         searchInput.addEventListener('input', (e) => {
             currentSearch = e.target.value;
             filterAndRender();
         });
 
-        // Inicializa catálogo
-        renderProducts(products);
+        // =====================================================================
+        // Página do produto
+        // =====================================================================
+        const productPage = document.getElementById('productPage');
 
-        // --- Sistema Customizado de Modal ---
+        // Seleção atual na página do produto
+        let selection = { size: null, qty: 1 };
+
+        const renderProductPage = (product) => {
+            const category = getCategory(product.category);
+            const discount = getDiscount(product);
+            const count = getInterestedCount(product);
+            const progress = Math.min(100, Math.round((count / product.minGroup) * 100));
+            const joined = hasSignedUp(product.slug);
+            const missing = Math.max(0, product.minGroup - count);
+
+            selection = { size: null, qty: 1 };
+
+            const sizesHtml = product.sizes.length ? `
+                <div>
+                    <span class="block text-sm font-semibold text-gray-900 mb-2">Tamanho</span>
+                    <div class="flex flex-wrap gap-2" id="sizeOptions">
+                        ${product.sizes.map(size => `
+                            <button type="button" data-size="${size}" class="size-btn min-w-[48px] px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-semibold text-gray-700 hover:border-brand-600 transition-colors">${size}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : '';
+
+            const groupActionHtml = joined ? `
+                <div class="mt-5 flex items-center gap-3 bg-white border border-green-200 text-green-700 rounded-xl px-4 py-3 text-sm font-medium">
+                    <i class="fas fa-circle-check text-lg"></i>
+                    Você já está na lista deste produto. Avisaremos quando o pedido for fechado!
+                </div>
+            ` : `
+                <button type="button" id="showInterestFormBtn" class="mt-5 w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors">
+                    <i class="fas fa-list-check mr-2"></i>Entrar na lista de interesse
+                </button>
+                <form id="interestForm" class="hidden mt-5 space-y-3">
+                    <div>
+                        <label for="interestName" class="block text-sm font-medium text-gray-700">Seu nome</label>
+                        <input type="text" id="interestName" required class="mt-1 block w-full border border-gray-300 rounded-lg py-2.5 px-3 bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label for="interestContact" class="block text-sm font-medium text-gray-700">WhatsApp</label>
+                        <input type="tel" id="interestContact" required placeholder="(53) 99999-9999" class="mt-1 block w-full border border-gray-300 rounded-lg py-2.5 px-3 bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500">
+                    </div>
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors">
+                        Confirmar inscrição
+                    </button>
+                    <p class="text-xs text-gray-500 text-center">Entrar na lista não é uma compra: você só paga quando o pedido coletivo for confirmado.</p>
+                </form>
+            `;
+
+            productPage.innerHTML = `
+                <!-- Navegação -->
+                <nav class="text-sm text-gray-500 mb-6 flex items-center gap-2 flex-wrap">
+                    <a href="#produtos" class="hover:text-brand-600 transition-colors"><i class="fas fa-arrow-left mr-1"></i>Catálogo</a>
+                    <span>/</span>
+                    <span>${category.label}</span>
+                    <span>/</span>
+                    <span class="text-gray-900 font-medium">${product.name}</span>
+                </nav>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                    <!-- Imagem -->
+                    <div class="lg:sticky lg:top-28 self-start">
+                        <div class="aspect-square bg-white rounded-3xl overflow-hidden border border-gray-100">
+                            <img src="${getImage(product)}" alt="${product.name}" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <!-- Informações e opções de compra -->
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-xs text-brand-600 font-semibold uppercase tracking-wider">${category.label}</span>
+                            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-1">${product.name}</h1>
+                            <p class="text-gray-600 mt-3">${product.description}</p>
+                        </div>
+
+                        ${sizesHtml}
+
+                        <div>
+                            <span class="block text-sm font-semibold text-gray-900 mb-2">Quantidade</span>
+                            <div class="inline-flex items-center border border-gray-300 rounded-lg bg-white">
+                                <button type="button" id="qtyMinus" class="w-10 h-10 text-gray-600 hover:text-brand-600" aria-label="Diminuir quantidade"><i class="fas fa-minus"></i></button>
+                                <span id="qtyValue" class="w-10 text-center font-semibold">1</span>
+                                <button type="button" id="qtyPlus" class="w-10 h-10 text-gray-600 hover:text-brand-600" aria-label="Aumentar quantidade"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Opção 1: Pré-venda coletiva -->
+                        <div class="relative bg-brand-50 border-2 border-brand-600 rounded-2xl p-5 sm:p-6">
+                            <span class="absolute -top-3 left-5 bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                                ${discount > 0 ? `Economize ${discount}%` : 'Mais barato'}
+                            </span>
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <h2 class="text-lg font-bold text-gray-900">Pré-venda coletiva</h2>
+                                    <p class="text-sm text-gray-600 mt-1">Entre na lista. Quando juntar o mínimo de pessoas, fazemos um pedido grande e todo mundo paga menos.</p>
+                                </div>
+                                <div class="text-right shrink-0">
+                                    <span class="block text-2xl font-extrabold text-brand-600">${formatPrice(product.priceGroup)}</span>
+                                    <span class="text-xs text-gray-500">por unidade</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-5">
+                                <div class="flex justify-between text-sm mb-1.5">
+                                    <span class="font-semibold text-gray-900"><i class="fas fa-users mr-1 text-brand-600"></i>${count} de ${product.minGroup} pessoas</span>
+                                    <span class="text-gray-500">${missing > 0 ? `faltam ${missing}` : 'mínimo atingido!'}</span>
+                                </div>
+                                <div class="w-full h-3 bg-white rounded-full overflow-hidden border border-brand-100">
+                                    <div class="h-full bg-brand-600 rounded-full transition-all" style="width: ${progress}%"></div>
+                                </div>
+                            </div>
+
+                            ${groupActionHtml}
+                        </div>
+
+                        <!-- Opção 2: Unidade avulsa -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 sm:p-6">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <h2 class="text-lg font-bold text-gray-900">Comprar a unidade</h2>
+                                    <p class="text-sm text-gray-600 mt-1">Não quer esperar? Compre avulso, sujeito à disponibilidade em estoque.</p>
+                                </div>
+                                <div class="text-right shrink-0">
+                                    <span class="block text-2xl font-extrabold text-gray-900">${formatPrice(product.priceUnit)}</span>
+                                    <span class="text-xs text-gray-500">por unidade</span>
+                                </div>
+                            </div>
+                            <button type="button" id="buyUnitBtn" class="mt-5 w-full bg-white border-2 border-gray-300 hover:border-brand-600 hover:text-brand-600 text-gray-800 font-semibold py-3 px-4 rounded-xl transition-colors">
+                                <i class="fab fa-whatsapp mr-2"></i>Comprar unidade
+                            </button>
+                        </div>
+
+                        <!-- Como funciona -->
+                        <div class="bg-white border border-gray-100 rounded-2xl p-5 sm:p-6">
+                            <h3 class="font-bold text-gray-900 mb-4">Como funciona a pré-venda?</h3>
+                            <ol class="space-y-3 text-sm text-gray-600">
+                                <li class="flex gap-3"><span class="w-6 h-6 shrink-0 rounded-full bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center">1</span>Você entra na lista de interesse, sem pagar nada.</li>
+                                <li class="flex gap-3"><span class="w-6 h-6 shrink-0 rounded-full bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center">2</span>Quando a lista atinge o mínimo de ${product.minGroup} pessoas, avisamos todos para confirmar e pagar.</li>
+                                <li class="flex gap-3"><span class="w-6 h-6 shrink-0 rounded-full bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center">3</span>Fazemos o pedido em grande quantidade e entregamos na sala do DAKA.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            bindProductPageEvents(product);
+        };
+
+        const bindProductPageEvents = (product) => {
+            // Tamanho
+            const sizeBtns = productPage.querySelectorAll('.size-btn');
+            sizeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    sizeBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    selection.size = btn.dataset.size;
+                });
+            });
+
+            // Quantidade
+            const qtyValue = document.getElementById('qtyValue');
+            document.getElementById('qtyMinus').addEventListener('click', () => {
+                selection.qty = Math.max(1, selection.qty - 1);
+                qtyValue.textContent = selection.qty;
+            });
+            document.getElementById('qtyPlus').addEventListener('click', () => {
+                selection.qty = Math.min(20, selection.qty + 1);
+                qtyValue.textContent = selection.qty;
+            });
+
+            // Pré-venda: mostra o formulário
+            const showFormBtn = document.getElementById('showInterestFormBtn');
+            const interestForm = document.getElementById('interestForm');
+            if (showFormBtn) {
+                showFormBtn.addEventListener('click', () => {
+                    if (!checkSize(product)) return;
+                    showFormBtn.classList.add('hidden');
+                    interestForm.classList.remove('hidden');
+                    document.getElementById('interestName').focus();
+                });
+                interestForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (!checkSize(product)) return;
+                    submitInterest(product, {
+                        nome: document.getElementById('interestName').value.trim(),
+                        whatsapp: document.getElementById('interestContact').value.trim(),
+                    });
+                });
+            }
+
+            // Compra avulsa
+            document.getElementById('buyUnitBtn').addEventListener('click', () => {
+                if (!checkSize(product)) return;
+                buyUnit(product);
+            });
+        };
+
+        // Exige um tamanho escolhido quando o produto tem tamanhos
+        const checkSize = (product) => {
+            if (product.sizes.length && !selection.size) {
+                showModal('Escolha um tamanho', 'Selecione o tamanho antes de continuar.', 'info');
+                return false;
+            }
+            return true;
+        };
+
+        const describeSelection = (product) =>
+            `${selection.qty}x ${product.name}${selection.size ? ` (tamanho ${selection.size})` : ''}`;
+
+        // --- Opção 1: entrar na lista de interesse ---
+        const submitInterest = async (product, contact) => {
+            const signup = {
+                produto: product.slug,
+                tamanho: selection.size,
+                quantidade: selection.qty,
+                ...contact,
+                data: new Date().toISOString(),
+            };
+
+            if (CONFIG.interestEndpoint) {
+                try {
+                    await fetch(CONFIG.interestEndpoint, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(signup),
+                    });
+                } catch {
+                    showModal('Não foi possível enviar', 'Verifique sua conexão e tente novamente.', 'info');
+                    return;
+                }
+            }
+
+            saveSignup(signup);
+            renderProductPage(product);
+            showModal(
+                'Você entrou na lista!',
+                `Reservamos seu interesse em ${describeSelection(product)}. Quando a lista atingir ${product.minGroup} pessoas, vamos te chamar no WhatsApp para confirmar o pedido.`
+            );
+        };
+
+        // --- Opção 2: comprar a unidade (abre conversa no WhatsApp) ---
+        const buyUnit = (product) => {
+            if (!CONFIG.whatsapp) {
+                showModal(
+                    'Compra avulsa',
+                    `Para comprar ${describeSelection(product)}, fale com a diretoria do DAKA pelo WhatsApp ou passe na sala do DAKA.`,
+                    'info'
+                );
+                return;
+            }
+            const message = `Olá! Quero comprar ${describeSelection(product)} pelo preço da unidade (${formatPrice(product.priceUnit)}).`;
+            window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
+        };
+
+        // =====================================================================
+        // Navegação entre catálogo e página do produto (pelo # do endereço)
+        // =====================================================================
+        const homeView = document.getElementById('homeView');
+        const productView = document.getElementById('productView');
+
+        const router = () => {
+            const match = location.hash.match(/^#\/produto\/([\w-]+)/);
+            const product = match && products.find(p => p.slug === match[1]);
+
+            if (product) {
+                homeView.classList.add('hidden');
+                productView.classList.remove('hidden');
+                document.title = `${product.name} | DAKA`;
+                renderProductPage(product);
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                return;
+            }
+
+            const wasOnProduct = homeView.classList.contains('hidden');
+            productView.classList.add('hidden');
+            homeView.classList.remove('hidden');
+            document.title = 'Catálogo | Diretório Acadêmico Karen Adami';
+
+            // Rola até a âncora (#produtos, #sugestoes...) depois de reexibir a página inicial
+            const target = location.hash.length > 1 && !location.hash.startsWith('#/')
+                ? document.querySelector(location.hash)
+                : null;
+            if (target) {
+                target.scrollIntoView({ behavior: wasOnProduct ? 'instant' : 'smooth' });
+            } else if (wasOnProduct) {
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            }
+        };
+
+        window.addEventListener('hashchange', router);
+
+        // =====================================================================
+        // Sistema Customizado de Modal
+        // =====================================================================
         const modal = document.getElementById('customModal');
         const modalBox = document.getElementById('modalBox');
         const modalTitle = document.getElementById('modalTitle');
@@ -746,7 +1087,7 @@
         const showModal = (title, message, type = 'success') => {
             modalTitle.textContent = title;
             modalMessage.textContent = message;
-            
+
             if (type === 'success') {
                 modalIcon.className = 'fas fa-check text-2xl text-brand-600';
                 modalIconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-brand-100 mb-4';
@@ -779,29 +1120,25 @@
             }
         });
 
-        // --- Ações dos Botões ---
-        const handleInterest = (productName) => {
-            showModal(
-                'Interesse Registrado!', 
-                `Que legal que você se interessou pelo(a) "${productName}". Entre em contato com a diretoria do DAKA pelo WhatsApp ou presencialmente na sala para realizar o seu pedido/reserva.`
-            );
-        };
-
-        // --- Formulário de Sugestão ---
+        // =====================================================================
+        // Formulário de Sugestão
+        // =====================================================================
         document.getElementById('suggestionForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('name').value;
-            
+
             // Simula envio
             showModal(
-                'Sugestão Enviada!', 
+                'Sugestão Enviada!',
                 `Muito obrigado, ${name}! Sua sugestão foi enviada para o Diretório Acadêmico. Valorizamos muito as ideias dos alunos.`
             );
-            
+
             e.target.reset(); // Limpa form
         });
 
-        // --- Mobile Menu Toggle ---
+        // =====================================================================
+        // Mobile Menu Toggle
+        // =====================================================================
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
 
@@ -810,13 +1147,18 @@
         });
 
         // Fechar menu mobile ao clicar em um link
-        const mobileLinks = menu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
+        menu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 menu.classList.add('hidden');
             });
         });
 
+        // =====================================================================
+        // Inicialização
+        // =====================================================================
+        renderTabs();
+        filterAndRender();
+        router();
     </script>
 </body>
 </html>
