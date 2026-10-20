@@ -571,7 +571,9 @@
         // =====================================================================
         // PRODUTOS
         //  - slug: identificador usado no endereço da página (#/produto/slug)
-        //  - image: caminho da foto (ex: 'img/moletom.jpg'). Vazio = imagem provisória
+        //  - images: fotos do produto (ficam em img/produtos/). Lista vazia = imagem provisória
+        //  - colors: (opcional) cores disponíveis, cada uma com suas próprias fotos.
+        //    Quando existe, as fotos de "images" são ignoradas.
         //  - priceUnit: preço da unidade avulsa (mais caro). null = "a definir"
         //  - priceGroup: preço na pré-venda coletiva (mais barato). null = "a definir"
         //  - minGroup: nº mínimo de pessoas na lista para fazer o pedido coletivo
@@ -584,8 +586,26 @@
                 slug: 'moletom',
                 name: 'Moletom DAKA',
                 category: 'roupas',
-                description: 'Moletom oficial do Diretório Acadêmico Karen Adami. Detalhes de tecido, cores e estampa em breve.',
-                image: '',
+                description: 'Moletom oficial do Diretório Acadêmico Karen Adami, disponível nas cores vinho e preto.',
+                images: [],
+                colors: [
+                    {
+                        name: 'Vinho',
+                        hex: '#7f1d2d',
+                        images: [
+                            { src: 'img/produtos/moletomvinhofrente.png', label: 'Frente' },
+                            { src: 'img/produtos/moletomvinhocosta.png', label: 'Costas' },
+                        ],
+                    },
+                    {
+                        name: 'Preto',
+                        hex: '#111827',
+                        images: [
+                            { src: 'img/produtos/moletompretofrente.png', label: 'Frente' },
+                            { src: 'img/produtos/moletompretocosta.png', label: 'Costas' },
+                        ],
+                    },
+                ],
                 priceUnit: null,
                 priceGroup: null,
                 minGroup: 20,
@@ -597,7 +617,10 @@
                 name: 'Camisa DAKA',
                 category: 'roupas',
                 description: 'Camisa oficial do Diretório Acadêmico Karen Adami. Detalhes de tecido, cores e estampa em breve.',
-                image: '',
+                images: [
+                    { src: 'img/produtos/camisafrente.png', label: 'Frente' },
+                    { src: 'img/produtos/camisacosta.png', label: 'Costas' },
+                ],
                 priceUnit: null,
                 priceGroup: null,
                 minGroup: 20,
@@ -609,7 +632,7 @@
                 name: 'Caneca DAKA',
                 category: 'acessorios',
                 description: 'Caneca oficial do Diretório Acadêmico Karen Adami. Detalhes de material, capacidade e arte em breve.',
-                image: '',
+                images: [], // foto em breve
                 priceUnit: null,
                 priceGroup: null,
                 minGroup: 20,
@@ -621,7 +644,9 @@
                 name: 'Cuia DAKA',
                 category: 'acessorios',
                 description: 'Cuia personalizada do Diretório Acadêmico Karen Adami. Detalhes de material e gravação em breve.',
-                image: '',
+                images: [
+                    { src: 'img/produtos/cuia.png', label: 'Frente' },
+                ],
                 priceUnit: null,
                 priceGroup: null,
                 minGroup: 15,
@@ -633,7 +658,7 @@
                 name: 'Adesivo Pequeno',
                 category: 'acessorios',
                 description: 'Adesivo pequeno do DAKA, ideal para notebook, garrafinha e caderno. Medidas e artes em breve.',
-                image: '',
+                images: [], // foto em breve
                 priceUnit: null,
                 priceGroup: null,
                 minGroup: 50,
@@ -645,7 +670,9 @@
                 name: 'Adesivo Grande',
                 category: 'acessorios',
                 description: 'Adesivo grande do DAKA. Medidas e artes em breve.',
-                image: '',
+                images: [
+                    { src: 'img/produtos/adesivogrande.png', label: 'Arte' },
+                ],
                 priceUnit: null,
                 priceGroup: null,
                 minGroup: 30,
@@ -662,8 +689,15 @@
 
         const getCategory = (id) => categories.find(c => c.id === id);
 
-        const getImage = (product) =>
-            product.image || `https://placehold.co/600x600/fef2f2/dc2626?text=${encodeURIComponent(product.name)}`;
+        const hasColors = (product) => Array.isArray(product.colors) && product.colors.length > 0;
+
+        // Fotos do produto (da cor escolhida, quando o produto tem cores)
+        const getImages = (product, colorIndex = 0) => {
+            const images = hasColors(product) ? product.colors[colorIndex].images : product.images;
+            return images.length
+                ? images
+                : [{ src: `https://placehold.co/800x1000/fef2f2/dc2626?text=${encodeURIComponent(product.name + ' - foto em breve')}`, label: 'Foto em breve' }];
+        };
 
         // Desconto da pré-venda em relação à unidade (só quando os dois preços existem)
         const getDiscount = (product) => {
@@ -734,15 +768,30 @@
                     ? `<span class="absolute top-3 right-3 bg-brand-600 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide z-10">Até ${discount}% off</span>`
                     : '';
 
+                // Com mouse, a foto de costas aparece ao passar por cima do card
+                const [front, back] = getImages(product);
+                const backImg = back
+                    ? `<img src="${back.src}" alt="${product.name} - ${back.label}" loading="lazy" class="absolute inset-0 w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-300">`
+                    : '';
+
+                const colorDots = hasColors(product) ? `
+                    <div class="flex items-center gap-1.5 mt-2">
+                        ${product.colors.map(c => `<span class="w-3.5 h-3.5 rounded-full border border-gray-300" style="background:${c.hex}" title="${c.name}"></span>`).join('')}
+                        <span class="text-[10px] sm:text-xs text-gray-500 ml-1">${product.colors.length} cores</span>
+                    </div>
+                ` : '';
+
                 return `
                     <a href="#/produto/${product.slug}" class="product-card bg-white rounded-2xl overflow-hidden border border-gray-100 flex flex-col h-full relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500">
                         ${discountTag}
-                        <div class="aspect-square bg-gray-100 relative overflow-hidden">
-                            <img src="${getImage(product)}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                        <div class="aspect-[4/5] bg-white relative overflow-hidden">
+                            <img src="${front.src}" alt="${product.name}" loading="lazy" class="w-full h-full object-contain ${back ? 'group-hover:opacity-0 transition-opacity duration-300' : 'group-hover:scale-105 transition-transform duration-500'}">
+                            ${backImg}
                         </div>
-                        <div class="p-3 sm:p-5 flex flex-col flex-grow">
+                        <div class="p-3 sm:p-5 flex flex-col flex-grow border-t border-gray-100">
                             <span class="text-[10px] sm:text-xs text-brand-600 font-semibold uppercase tracking-wider mb-1 block">${getCategory(product.category).label}</span>
                             <h3 class="text-sm sm:text-lg font-bold text-gray-900 leading-tight">${product.name}</h3>
+                            ${colorDots}
                             <div class="mt-auto pt-3 sm:pt-4 space-y-1 text-xs sm:text-sm">
                                 <div class="flex justify-between gap-2">
                                     <span class="text-gray-500">Pré-venda</span>
@@ -783,7 +832,42 @@
         const productPage = document.getElementById('productPage');
 
         // Seleção atual na página do produto
-        let selection = { size: null, qty: 1 };
+        let selection = { size: null, qty: 1, color: 0 };
+
+        // Galeria: foto principal + miniaturas (frente/costas) da cor escolhida
+        const renderGallery = (product) => {
+            const gallery = document.getElementById('gallery');
+            const images = getImages(product, selection.color);
+            const colorName = hasColors(product) ? ` ${product.colors[selection.color].name}` : '';
+
+            gallery.innerHTML = `
+                <div class="aspect-[4/5] bg-white rounded-3xl overflow-hidden border border-gray-100">
+                    <img id="mainImage" src="${images[0].src}" alt="${product.name}${colorName} - ${images[0].label}" class="w-full h-full object-contain">
+                </div>
+                ${images.length > 1 ? `
+                    <div class="flex gap-3 mt-4">
+                        ${images.map((img, i) => `
+                            <button type="button" data-index="${i}" class="thumb-btn w-20 sm:w-24 rounded-xl overflow-hidden border-2 ${i === 0 ? 'border-brand-600' : 'border-gray-200'} bg-white hover:border-brand-600 transition-colors" aria-label="Ver ${img.label}">
+                                <img src="${img.src}" alt="" class="w-full aspect-[4/5] object-contain">
+                                <span class="block text-xs font-medium text-gray-600 pb-1">${img.label}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            `;
+
+            const mainImage = document.getElementById('mainImage');
+            const thumbs = gallery.querySelectorAll('.thumb-btn');
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    const img = images[thumb.dataset.index];
+                    mainImage.src = img.src;
+                    mainImage.alt = `${product.name}${colorName} - ${img.label}`;
+                    thumbs.forEach(t => t.classList.replace('border-brand-600', 'border-gray-200'));
+                    thumb.classList.replace('border-gray-200', 'border-brand-600');
+                });
+            });
+        };
 
         const renderProductPage = (product) => {
             const category = getCategory(product.category);
@@ -793,7 +877,20 @@
             const joined = hasSignedUp(product.slug);
             const missing = Math.max(0, product.minGroup - count);
 
-            selection = { size: null, qty: 1 };
+            selection = { size: null, qty: 1, color: 0 };
+
+            const colorsHtml = hasColors(product) ? `
+                <div>
+                    <span class="block text-sm font-semibold text-gray-900 mb-2">Cor: <span id="colorName" class="font-normal text-gray-600">${product.colors[0].name}</span></span>
+                    <div class="flex flex-wrap gap-2" id="colorOptions">
+                        ${product.colors.map((c, i) => `
+                            <button type="button" data-color="${i}" class="color-btn flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${i === 0 ? 'border-brand-600' : 'border-gray-300'} bg-white text-sm font-semibold text-gray-700 hover:border-brand-600 transition-colors">
+                                <span class="w-5 h-5 rounded-full border border-gray-300" style="background:${c.hex}"></span>${c.name}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : '';
 
             const sizesHtml = product.sizes.length ? `
                 <div>
@@ -842,12 +939,8 @@
                 </nav>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-                    <!-- Imagem -->
-                    <div class="lg:sticky lg:top-28 self-start">
-                        <div class="aspect-square bg-white rounded-3xl overflow-hidden border border-gray-100">
-                            <img src="${getImage(product)}" alt="${product.name}" class="w-full h-full object-cover">
-                        </div>
-                    </div>
+                    <!-- Fotos -->
+                    <div class="lg:sticky lg:top-28 self-start w-full max-w-md mx-auto lg:max-w-none" id="gallery"></div>
 
                     <!-- Informações e opções de compra -->
                     <div class="space-y-6">
@@ -856,6 +949,8 @@
                             <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-1">${product.name}</h1>
                             <p class="text-gray-600 mt-3">${product.description}</p>
                         </div>
+
+                        ${colorsHtml}
 
                         ${sizesHtml}
 
@@ -931,6 +1026,20 @@
         };
 
         const bindProductPageEvents = (product) => {
+            renderGallery(product);
+
+            // Cor (troca as fotos da galeria)
+            const colorBtns = productPage.querySelectorAll('.color-btn');
+            colorBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selection.color = Number(btn.dataset.color);
+                    colorBtns.forEach(b => b.classList.replace('border-brand-600', 'border-gray-300'));
+                    btn.classList.replace('border-gray-300', 'border-brand-600');
+                    document.getElementById('colorName').textContent = product.colors[selection.color].name;
+                    renderGallery(product);
+                });
+            });
+
             // Tamanho
             const sizeBtns = productPage.querySelectorAll('.size-btn');
             sizeBtns.forEach(btn => {
@@ -988,13 +1097,19 @@
             return true;
         };
 
-        const describeSelection = (product) =>
-            `${selection.qty}x ${product.name}${selection.size ? ` (tamanho ${selection.size})` : ''}`;
+        const describeSelection = (product) => {
+            const details = [
+                hasColors(product) ? `cor ${product.colors[selection.color].name.toLowerCase()}` : null,
+                selection.size ? `tamanho ${selection.size}` : null,
+            ].filter(Boolean);
+            return `${selection.qty}x ${product.name}${details.length ? ` (${details.join(', ')})` : ''}`;
+        };
 
         // --- Opção 1: entrar na lista de interesse ---
         const submitInterest = async (product, contact) => {
             const signup = {
                 produto: product.slug,
+                cor: hasColors(product) ? product.colors[selection.color].name : null,
                 tamanho: selection.size,
                 quantidade: selection.qty,
                 ...contact,
