@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natal Solidário | Diretório Acadêmico Karen Adami</title>
+
+    <!-- Tailwind CSS para estilização -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Configuração do Tailwind (mesma paleta do catálogo + verde e dourado natalinos) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            200: '#fecaca',
+                            400: '#f87171',
+                            500: '#ef4444',
+                            600: '#dc2626', // Vermelho principal
+                            700: '#b91c1c',
+                            900: '#7f1d1d',
+                        },
+                        pine: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                        },
+                        gold: {
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        section[id], footer[id] {
+            scroll-margin-top: 80px;
+        }
+
+        /* ===================== Enfeites natalinos ===================== */
+
+        /* Neve caindo (os flocos são criados pelo JavaScript) */
+        #snow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 40;
+            overflow: hidden;
+        }
+        .flake {
+            position: absolute;
+            top: -20px;
+            color: #fecaca;
+            opacity: 0.8;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        @keyframes fall {
+            0%   { transform: translate(0, -20px) rotate(0deg); }
+            50%  { transform: translate(24px, 50vh) rotate(180deg); }
+            100% { transform: translate(-12px, 105vh) rotate(360deg); }
+        }
+
+        /* Pisca-pisca no topo do hero */
+        .lights {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            display: flex;
+            justify-content: space-around;
+            pointer-events: none;
+        }
+        .lights::before {
+            /* o fio */
+            content: '';
+            position: absolute;
+            top: -18px;
+            left: -5%;
+            width: 110%;
+            height: 40px;
+            border-bottom: 2px solid #374151;
+            border-radius: 50%;
+        }
+        .bulb {
+            position: relative;
+            top: 18px;
+            width: 12px;
+            height: 20px;
+            border-radius: 50%;
+            animation: twinkle 1.6s ease-in-out infinite;
+        }
+        .bulb::before {
+            /* o soquete */
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 2px;
+            width: 8px;
+            height: 7px;
+            background: #374151;
+            border-radius: 2px;
+        }
+        .bulb:nth-child(4n+1) { background: #dc2626; box-shadow: 0 4px 14px #dc2626; }
+        .bulb:nth-child(4n+2) { background: #16a34a; box-shadow: 0 4px 14px #16a34a; animation-delay: .4s; }
+        .bulb:nth-child(4n+3) { background: #fbbf24; box-shadow: 0 4px 14px #fbbf24; animation-delay: .8s; }
+        .bulb:nth-child(4n+4) { background: #3b82f6; box-shadow: 0 4px 14px #3b82f6; animation-delay: 1.2s; }
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .35; box-shadow: none; }
+        }
+
+        /* Faixa listrada tipo bengala doce */
+        .candy-stripe {
+            height: 10px;
+            background: repeating-linear-gradient(-45deg, #dc2626 0 12px, #ffffff 12px 24px);
+        }
+
+        /* Bolinhas de árvore penduradas */
+        .ornament {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: swing 3s ease-in-out infinite;
+            transform-origin: top center;
+        }
+        .ornament .string { width: 2px; background: #d1d5db; }
+        .ornament .ball {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: inset -6px -6px 0 rgba(0,0,0,.12);
+        }
+        .ornament .ball::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 11px;
+            width: 12px;
+            height: 7px;
+            background: #fbbf24;
+            border-radius: 2px;
+        }
+        @keyframes swing {
+            0%, 100% { transform: rotate(4deg); }
+            50% { transform: rotate(-4deg); }
+        }
+
+        /* Quem prefere menos movimento não vê animações */
+        @media (prefers-reduced-motion: reduce) {
+            #snow { display: none; }
+            .bulb, .ornament { animation: none; }
+        }
+
+        /* ===================== Celulares (até 639px) ===================== */
+        @media (max-width: 639px) {
+            section[id], footer[id] {
+                scroll-margin-top: 64px;
+            }
+            header .h-20 { height: 64px; }
+            header .w-12.h-12 { width: 40px; height: 40px; }
+            header a.group { gap: 10px; }
+            header a.group .text-lg { font-size: 15px; }
+            header a.group .text-sm { font-size: 11px; letter-spacing: 0.12em; }
+            #mobile-menu-btn { padding: 8px; margin-right: -8px; }
+            #mobile-menu a { padding-top: 12px; padding-bottom: 12px; }
+            .ornament { display: none; }
+            #modalBox { max-height: 90vh; overflow-y: auto; padding: 20px; }
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased flex flex-col min-h-screen">
+
+    <!-- Neve -->
+    <div id="snow" aria-hidden="true"></div>
+
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="flex items-center gap-3 group">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center p-1 overflow-hidden group-hover:scale-105 transition-transform">
+                            <img src="logo preta daka vetor (1).svg" alt="Logo DAKA" class="w-full h-full object-contain">
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-lg leading-tight text-gray-900 tracking-tight">Diretório Acadêmico</span>
+                            <span class="font-bold text-sm leading-tight text-brand-600 uppercase tracking-widest">Karen Adami</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">Catálogo</a>
+                    <a href="#como-doar" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">Como doar</a>
+                    <a href="#o-que-doar" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">O que doar</a>
+                    <a href="#pontos" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">Pontos de coleta</a>
+                    <a href="#duvidas" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">Dúvidas</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-brand-600 focus:outline-none" aria-label="Abrir menu">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 shadow-lg">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-brand-50">Catálogo</a>
+                <a href="#como-doar" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-brand-50">Como doar</a>
+                <a href="#o-que-doar" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-brand-50">O que doar</a>
+                <a href="#pontos" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-brand-50">Pontos de coleta</a>
+                <a href="#duvidas" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-brand-50">Dúvidas</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================== Hero ===================== -->
+    <section id="inicio" class="relative bg-white overflow-hidden">
+        <!-- Pisca-pisca -->
+        <div class="lights" id="lights" aria-hidden="true"></div>
+
+        <!-- Bolinhas penduradas (só em telas maiores) -->
+        <div class="ornament hidden sm:flex" style="left: 6%; top: 0;" aria-hidden="true">
+            <span class="string" style="height: 70px"></span><span class="ball bg-brand-600"></span>
+        </div>
+        <div class="ornament hidden lg:flex" style="left: 46%; top: 0; animation-delay: .8s" aria-hidden="true">
+            <span class="string" style="height: 40px"></span><span class="ball bg-gold-400"></span>
+        </div>
+        <div class="ornament hidden sm:flex" style="right: 5%; top: 0; animation-delay: 1.4s" aria-hidden="true">
+            <span class="string" style="height: 95px"></span><span class="ball bg-pine-600"></span>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-20 grid lg:grid-cols-2 gap-12 items-center">
+            <div class="text-center lg:text-left">
+                <span class="inline-flex items-center gap-2 bg-pine-50 text-pine-700 text-xs sm:text-sm font-semibold px-4 py-1.5 rounded-full">
+                    <i class="fas fa-tree"></i> Campanha de Natal <span id="campaignYear"></span>
+                </span>
+                <h1 class="mt-5 text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                    <span class="block">Natal Solidário:</span>
+                    <span class="block text-brand-600">ninguém fica sem ceia.</span>
+                </h1>
+                <p class="mt-5 text-base text-gray-500 sm:text-lg md:text-xl max-w-xl mx-auto lg:mx-0">
+                    O DAKA está arrecadando alimentos não perecíveis para montar cestas básicas para famílias em situação de vulnerabilidade. Cada quilo faz diferença!
+                </p>
+                <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                    <a href="#registrar" class="flex items-center justify-center px-8 py-3 text-base font-semibold rounded-full text-white bg-brand-600 hover:bg-brand-700 md:py-4 md:text-lg transition-colors shadow">
+                        <i class="fas fa-hand-holding-heart mr-2"></i>Quero doar
+                    </a>
+                    <a href="#o-que-doar" class="flex items-center justify-center px-8 py-3 border-2 border-brand-100 text-base font-semibold rounded-full text-brand-700 bg-brand-50 hover:bg-brand-100 md:py-4 md:text-lg transition-colors">
+                        O que posso doar?
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card da meta -->
+            <div class="relative">
+                <div class="absolute -top-4 -right-2 sm:-right-4 text-gold-400 text-4xl rotate-12" aria-hidden="true"><i class="fas fa-star"></i></div>
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-xl overflow-hidden">
+                    <div class="candy-stripe"></div>
+                    <div class="p-6 sm:p-8">
+                        <div class="flex items-center justify-between gap-4">
+                            <h2 class="text-lg font-bold text-gray-900">Nossa meta</h2>
+                            <span class="text-sm text-gray-500"><i class="fas fa-calendar-day mr-1 text-brand-600"></i>até <span id="deadlineLabel"></span></span>
+                        </div>
+
+                        <div class="mt-5 flex items-end gap-2">
+                            <span id="raisedKg" class="text-5xl font-extrabold text-brand-600">0</span>
+                            <span class="text-gray-500 font-medium mb-1.5">de <span id="goalKg">0</span> kg arrecadados</span>
+                        </div>
+
+                        <div class="mt-4 w-full h-4 bg-brand-50 rounded-full overflow-hidden border border-brand-100">
+                            <div id="progressBar" class="h-full rounded-full transition-all duration-1000" style="width: 0%; background: repeating-linear-gradient(-45deg, #dc2626 0 10px, #ef4444 10px 20px);"></div>
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500"><span id="progressPct" class="font-semibold text-gray-900">0%</span> da meta</p>
+
+                        <!-- Contagem regressiva -->
+                        <div class="mt-6 grid grid-cols-3 gap-3 text-center" id="countdown">
+                            <div class="bg-gray-50 rounded-xl py-3">
+                                <span id="cdDays" class="block text-2xl font-extrabold text-gray-900">--</span>
+                                <span class="text-xs text-gray-500 uppercase tracking-wide">dias</span>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl py-3">
+                                <span id="cdHours" class="block text-2xl font-extrabold text-gray-900">--</span>
+                                <span class="text-xs text-gray-500 uppercase tracking-wide">horas</span>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl py-3">
+                                <span id="cdMinutes" class="block text-2xl font-extrabold text-gray-900">--</span>
+                                <span class="text-xs text-gray-500 uppercase tracking-wide">min</span>
+                            </div>
+                        </div>
+                        <p id="campaignEnded" class="hidden mt-6 text-center font-semibold text-pine-700 bg-pine-50 rounded-xl py-3">
+                            <i class="fas fa-gift mr-2"></i>A arrecadação foi encerrada. Obrigado a todos!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== Como doar ===================== -->
+    <section id="como-doar" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Como doar</h2>
+                <div class="w-24 h-1 bg-brand-600 mx-auto mt-4 rounded-full"></div>
+                <p class="mt-4 text-gray-500 max-w-2xl mx-auto">Escolha o jeito que for melhor para você. Todas as doações viram cestas básicas entregues antes do Natal.</p>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-3">
+                <div class="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center text-2xl"><i class="fas fa-basket-shopping"></i></div>
+                    <h3 class="mt-4 text-lg font-bold text-gray-900">1. Doe alimentos</h3>
+                    <p class="mt-2 text-sm text-gray-600 flex-grow">Leve alimentos não perecíveis, dentro da validade, a um dos pontos de coleta.</p>
+                    <a href="#pontos" class="mt-4 text-sm font-semibold text-brand-600 hover:text-brand-700">Ver pontos de coleta <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col">
+                    <div class="w-14 h-14 rounded-2xl bg-pine-50 text-pine-700 flex items-center justify-center text-2xl"><i class="fas fa-qrcode"></i></div>
+                    <h3 class="mt-4 text-lg font-bold text-gray-900">2. Ou doe via Pix</h3>
+                    <p class="mt-2 text-sm text-gray-600 flex-grow">Não consegue ir até um ponto? Qualquer valor via Pix é usado para comprar alimentos para as cestas.</p>
+                    <a href="#pix" class="mt-4 text-sm font-semibold text-brand-600 hover:text-brand-700">Ver chave Pix <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl"><i class="fas fa-clipboard-check"></i></div>
+                    <h3 class="mt-4 text-lg font-bold text-gray-900">3. Registre sua doação</h3>
+                    <p class="mt-2 text-sm text-gray-600 flex-grow">Preencha o formulário para nos ajudar a acompanhar a meta e agradecer quem participou.</p>
+                    <a href="#registrar" class="mt-4 text-sm font-semibold text-brand-600 hover:text-brand-700">Registrar doação <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== O que doar ===================== -->
+    <section id="o-que-doar" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">O que doar</h2>
+                <div class="w-24 h-1 bg-brand-600 mx-auto mt-4 rounded-full"></div>
+                <p class="mt-4 text-gray-500 max-w-2xl mx-auto">Os itens que mais precisamos para montar as cestas. Os marcados com <i class="fas fa-star text-gold-400"></i> são prioridade.</p>
+            </div>
+
+            <!-- Itens gerados pelo JavaScript a partir da lista "items" -->
+            <div id="itemsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4"></div>
+
+            <div class="mt-10 grid gap-4 md:grid-cols-2">
+                <div class="flex gap-4 bg-pine-50 rounded-2xl p-5">
+                    <i class="fas fa-circle-check text-pine-600 text-xl mt-0.5"></i>
+                    <div>
+                        <h3 class="font-bold text-gray-900">Pode doar</h3>
+                        <p class="text-sm text-gray-600 mt-1">Alimentos lacrados, na embalagem original e com pelo menos 2 meses de validade.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 bg-brand-50 rounded-2xl p-5">
+                    <i class="fas fa-circle-xmark text-brand-600 text-xl mt-0.5"></i>
+                    <div>
+                        <h3 class="font-bold text-gray-900">Não pode doar</h3>
+                        <p class="text-sm text-gray-600 mt-1">Alimentos perecíveis (carne, frios, frutas), embalagens abertas ou vencidas e bebidas alcoólicas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== Pontos de coleta + Pix ===================== -->
+    <section id="pontos" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Pontos de coleta</h2>
+                <div class="w-24 h-1 bg-brand-600 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid gap-8 lg:grid-cols-5">
+                <!-- Lista de pontos (gerada pelo JavaScript) -->
+                <div id="pointsList" class="lg:col-span-3 space-y-4"></div>
+
+                <!-- Pix -->
+                <div id="pix" class="lg:col-span-2 scroll-mt-24">
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden h-full">
+                        <div class="bg-pine-700 text-white p-6 relative overflow-hidden">
+                            <i class="fas fa-snowflake absolute -right-4 -top-4 text-8xl text-white/10" aria-hidden="true"></i>
+                            <h3 class="text-xl font-bold"><i class="fas fa-qrcode mr-2"></i>Doe via Pix</h3>
+                            <p class="text-pine-100 text-sm mt-2">Com R$ 10 compramos cerca de 2 kg de arroz. Toda ajuda conta!</p>
+                        </div>
+                        <div class="p-6">
+                            <span class="block text-sm font-semibold text-gray-900 mb-2">Chave Pix</span>
+                            <div class="flex gap-2">
+                                <input id="pixKey" readonly class="flex-grow min-w-0 border border-gray-300 rounded-lg py-2.5 px-3 bg-gray-50 text-gray-700 text-sm" value="">
+                                <button type="button" id="copyPixBtn" class="shrink-0 bg-pine-700 hover:bg-pine-800 text-white font-semibold px-4 rounded-lg transition-colors text-sm">
+                                    <i class="fas fa-copy mr-1"></i>Copiar
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2" id="pixHolder"></p>
+                            <p class="text-xs text-gray-500 mt-4">Depois de doar, registre sua doação abaixo para entrar na contagem da meta.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== Registrar doação ===================== -->
+    <section id="registrar" class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-brand-50 rounded-3xl shadow-sm overflow-hidden flex flex-col md:flex-row">
+                <div class="md:w-2/5 bg-brand-600 p-8 sm:p-10 text-white flex flex-col justify-center relative overflow-hidden">
+                    <i class="fas fa-gifts absolute -bottom-6 -right-6 text-9xl text-white/10" aria-hidden="true"></i>
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-4">Registre sua doação</h3>
+                    <p class="text-brand-100">Assim conseguimos acompanhar a meta, organizar a coleta e agradecer cada pessoa que fez parte deste Natal.</p>
+                </div>
+
+                <div class="md:w-3/5 p-6 sm:p-10">
+                    <form id="donationForm" class="space-y-5">
+                        <div>
+                            <label for="donorName" class="block text-sm font-medium text-gray-700">Seu nome</label>
+                            <input type="text" id="donorName" required class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500">
+                        </div>
+
+                        <div>
+                            <label for="donorContact" class="block text-sm font-medium text-gray-700">WhatsApp ou e-mail (opcional)</label>
+                            <input type="text" id="donorContact" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500">
+                        </div>
+
+                        <fieldset>
+                            <legend class="block text-sm font-medium text-gray-700 mb-2">Como você vai doar?</legend>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="donation-type flex items-center gap-2 border-2 border-brand-600 bg-white rounded-lg py-3 px-4 cursor-pointer">
+                                    <input type="radio" name="donationType" value="alimentos" checked class="accent-brand-600">
+                                    <span class="text-sm font-semibold"><i class="fas fa-basket-shopping mr-1 text-brand-600"></i>Alimentos</span>
+                                </label>
+                                <label class="donation-type flex items-center gap-2 border-2 border-gray-200 bg-white rounded-lg py-3 px-4 cursor-pointer">
+                                    <input type="radio" name="donationType" value="pix" class="accent-brand-600">
+                                    <span class="text-sm font-semibold"><i class="fas fa-qrcode mr-1 text-pine-700"></i>Pix</span>
+                                </label>
+                            </div>
+                        </fieldset>
+
+                        <!-- Campos para doação de alimentos -->
+                        <div id="foodFields" class="space-y-5">
+                            <div>
+                                <label for="donationKg" class="block text-sm font-medium text-gray-700">Quantidade aproximada (kg)</label>
+                                <input type="number" id="donationKg" min="0.5" step="0.5" placeholder="Ex: 5" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500">
+                            </div>
+                            <div>
+                                <label for="donationPoint" class="block text-sm font-medium text-gray-700">Onde vai entregar?</label>
+                                <select id="donationPoint" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500"></select>
+                            </div>
+                        </div>
+
+                        <!-- Campo para doação via Pix -->
+                        <div id="pixFields" class="hidden">
+                            <label for="donationValue" class="block text-sm font-medium text-gray-700">Valor doado (R$)</label>
+                            <input type="number" id="donationValue" min="1" step="0.01" placeholder="Ex: 20" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500">
+                        </div>
+
+                        <button type="submit" class="w-full flex justify-center items-center py-3.5 px-4 rounded-lg shadow-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors">
+                            Registrar doação <i class="fas fa-heart ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== Dúvidas ===================== -->
+    <section id="duvidas" class="py-16 bg-gray-50">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Dúvidas frequentes</h2>
+                <div class="w-24 h-1 bg-brand-600 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="space-y-3">
+                <details class="group bg-white rounded-2xl border border-gray-100 p-5">
+                    <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-900 list-none">
+                        Para quem vão as doações?
+                        <i class="fas fa-chevron-down text-brand-600 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-3 text-sm text-gray-600">As cestas montadas com os alimentos arrecadados serão entregues a famílias em situação de vulnerabilidade, por meio de uma instituição parceira, antes do Natal.</p>
+                </details>
+                <details class="group bg-white rounded-2xl border border-gray-100 p-5">
+                    <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-900 list-none">
+                        Preciso registrar minha doação?
+                        <i class="fas fa-chevron-down text-brand-600 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-3 text-sm text-gray-600">Não é obrigatório, mas ajuda muito! Com o registro conseguimos acompanhar a meta e planejar a coleta nos pontos.</p>
+                </details>
+                <details class="group bg-white rounded-2xl border border-gray-100 p-5">
+                    <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-900 list-none">
+                        O dinheiro doado via Pix vai para onde?
+                        <i class="fas fa-chevron-down text-brand-600 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-3 text-sm text-gray-600">Todo o valor é usado para comprar alimentos para as cestas. Ao final da campanha publicamos a prestação de contas no nosso Instagram.</p>
+                </details>
+                <details class="group bg-white rounded-2xl border border-gray-100 p-5">
+                    <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-900 list-none">
+                        Posso doar produtos de higiene?
+                        <i class="fas fa-chevron-down text-brand-600 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-3 text-sm text-gray-600">Pode sim! Sabonete, pasta de dente e papel higiênico também são bem-vindos e entram nas cestas.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato" class="bg-gray-900 text-white mt-auto">
+        <div class="candy-stripe"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="col-span-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1">
+                            <img src="logo preta daka vetor (1).svg" alt="Logo DAKA" class="w-full h-full object-contain filter invert">
+                        </div>
+                        <span class="font-bold text-xl tracking-tight">DAKA</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Diretório Acadêmico Karen Adami. Representando os estudantes com dedicação, promovendo integração e lutando por um ensino de qualidade.</p>
+                </div>
+
+                <div class="col-span-1">
+                    <h4 class="text-lg font-bold mb-4 uppercase tracking-wider text-gray-200">Links Rápidos</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="index.html" class="hover:text-brand-500 transition-colors">Catálogo</a></li>
+                        <li><a href="#como-doar" class="hover:text-brand-500 transition-colors">Como doar</a></li>
+                        <li><a href="#pontos" class="hover:text-brand-500 transition-colors">Pontos de coleta</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-span-1">
+                    <h4 class="text-lg font-bold mb-4 uppercase tracking-wider text-gray-200">Contato</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-brand-500"></i>
+                            <span>Sala do DAKA - Prédio Principal<br>Pelotas, RS</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-brand-500"></i>
+                            <a href="mailto:contato@daka.com.br" class="hover:text-white transition-colors">contato@daka.com.br</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 text-sm text-center text-gray-500">
+                <p>Feliz Natal! <i class="fas fa-tree text-pine-600 mx-1"></i> &copy; 2026 Diretório Acadêmico Karen Adami.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="customModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all p-6 scale-95 opacity-0" id="modalBox">
+            <div class="absolute top-4 right-4">
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none" aria-label="Fechar">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="text-center mt-2">
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-brand-100 mb-4" id="modalIconContainer">
+                    <i id="modalIcon" class="fas fa-check text-2xl text-brand-600"></i>
+                </div>
+                <h3 class="text-xl leading-6 font-bold text-gray-900" id="modalTitle">Título</h3>
+                <div class="mt-3">
+                    <p class="text-sm text-gray-500" id="modalMessage">Mensagem do modal aqui.</p>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-center">
+                <button onclick="closeModal()" class="inline-flex justify-center w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-white bg-brand-600 border border-transparent rounded-lg hover:bg-brand-700 focus:outline-none transition-colors shadow-sm">
+                    Entendi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================================
+        // CONFIGURAÇÕES DA CAMPANHA — edite aqui
+        // =====================================================================
+        const CAMPAIGN = {
+            // Último dia de arrecadação (ano-mês-dia)
+            deadline: '2026-12-18',
+
+            // Meta e quanto já foi arrecadado, em kg (atualize o "raisedKg" conforme as doações chegam)
+            goalKg: 500,
+            raisedKg: 0,
+
+            // Chave Pix e nome do titular. Vazio = aparece "chave Pix em breve"
+            pixKey: '',
+            pixHolder: '',
+
+            // Endereço que recebe os registros de doação (ex: Google Apps Script ligado a uma planilha).
+            // Vazio = o registro fica só no navegador da pessoa e a diretoria NÃO recebe os dados.
+            donationEndpoint: '',
+        };
+
+        // Pontos de coleta
+        const points = [
+            {
+                name: 'Sala do DAKA',
+                address: 'Prédio Principal',
+                hours: 'Segunda a sexta, das 9h às 18h',
+            },
+            // Adicione mais pontos copiando o bloco acima. Ex:
+            // { name: 'Biblioteca do campus', address: 'Térreo, perto da entrada', hours: 'Segunda a sexta, 8h às 22h' },
+        ];
+
+        // Itens que mais precisamos (priority: true = aparece com estrela)
+        const items = [
+            { name: 'Arroz',            icon: 'fa-bowl-rice',      priority: true },
+            { name: 'Feijão',           icon: 'fa-seedling',       priority: true },
+            { name: 'Óleo',             icon: 'fa-bottle-droplet', priority: true },
+            { name: 'Leite',            icon: 'fa-glass-water',    priority: true },
+            { name: 'Macarrão',         icon: 'fa-wheat-awn',      priority: false },
+            { name: 'Açúcar',           icon: 'fa-cubes-stacked',  priority: false },
+            { name: 'Café',             icon: 'fa-mug-hot',        priority: false },
+            { name: 'Farinha',          icon: 'fa-wheat-awn',      priority: false },
+            { name: 'Enlatados',        icon: 'fa-jar',            priority: false },
+            { name: 'Sal',              icon: 'fa-mortar-pestle',  priority: false },
+            { name: 'Biscoitos',        icon: 'fa-cookie',         priority: false },
+            { name: 'Panetone',         icon: 'fa-cake-candles',   priority: false },
+        ];
+
+        // =====================================================================
+        // Meta e contagem regressiva
+        // =====================================================================
+        const deadlineDate = new Date(`${CAMPAIGN.deadline}T23:59:59`);
+
+        document.getElementById('campaignYear').textContent = deadlineDate.getFullYear();
+        document.getElementById('deadlineLabel').textContent =
+            deadlineDate.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' });
+
+        const formatKg = (kg) => kg.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+        const pct = Math.min(100, Math.round((CAMPAIGN.raisedKg / CAMPAIGN.goalKg) * 100));
+        document.getElementById('raisedKg').textContent = formatKg(CAMPAIGN.raisedKg);
+        document.getElementById('goalKg').textContent = formatKg(CAMPAIGN.goalKg);
+        document.getElementById('progressPct').textContent = `${pct}%`;
+        // Pequeno atraso para a barra "encher" com animação
+        setTimeout(() => {
+            document.getElementById('progressBar').style.width = `${Math.max(pct, 2)}%`;
+        }, 300);
+
+        const updateCountdown = () => {
+            const diff = deadlineDate - new Date();
+            if (diff <= 0) {
+                document.getElementById('countdown').classList.add('hidden');
+                document.getElementById('campaignEnded').classList.remove('hidden');
+                return;
+            }
+            const minutes = Math.floor(diff / 60000);
+            document.getElementById('cdDays').textContent = Math.floor(minutes / 1440);
+            document.getElementById('cdHours').textContent = Math.floor((minutes % 1440) / 60);
+            document.getElementById('cdMinutes').textContent = minutes % 60;
+        };
+        updateCountdown();
+        setInterval(updateCountdown, 30000);
+
+        // =====================================================================
+        // Listas da página
+        // =====================================================================
+        document.getElementById('itemsGrid').innerHTML = items.map(item => `
+            <div class="relative bg-gray-50 rounded-2xl p-4 text-center border ${item.priority ? 'border-gold-300' : 'border-transparent'}">
+                ${item.priority ? '<i class="fas fa-star text-gold-400 absolute top-2 right-2 text-sm" title="Prioridade"></i>' : ''}
+                <div class="w-12 h-12 mx-auto rounded-full bg-white text-brand-600 flex items-center justify-center text-xl shadow-sm">
+                    <i class="fas ${item.icon}"></i>
+                </div>
+                <span class="block mt-3 text-sm font-semibold text-gray-900">${item.name}</span>
+            </div>
+        `).join('');
+
+        document.getElementById('pointsList').innerHTML = points.map(point => `
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 flex gap-4">
+                <div class="w-12 h-12 shrink-0 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl">
+                    <i class="fas fa-location-dot"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-900">${point.name}</h3>
+                    <p class="text-sm text-gray-600 mt-0.5">${point.address}</p>
+                    <p class="text-sm text-gray-500 mt-2"><i class="far fa-clock mr-1"></i>${point.hours}</p>
+                </div>
+            </div>
+        `).join('') + `
+            <p class="text-sm text-gray-500 pl-1"><i class="fas fa-calendar-check mr-1 text-pine-600"></i>Recebemos doações até ${document.getElementById('deadlineLabel').textContent}.</p>
+        `;
+
+        document.getElementById('donationPoint').innerHTML = points
+            .map(point => `<option value="${point.name}">${point.name}</option>`)
+            .join('');
+
+        // =====================================================================
+        // Pix
+        // =====================================================================
+        const pixKeyInput = document.getElementById('pixKey');
+        const copyPixBtn = document.getElementById('copyPixBtn');
+
+        if (CAMPAIGN.pixKey) {
+            pixKeyInput.value = CAMPAIGN.pixKey;
+            document.getElementById('pixHolder').textContent = CAMPAIGN.pixHolder ? `Titular: ${CAMPAIGN.pixHolder}` : '';
+        } else {
+            pixKeyInput.value = 'Chave Pix em breve';
+            copyPixBtn.disabled = true;
+            copyPixBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        copyPixBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(CAMPAIGN.pixKey);
+                copyPixBtn.innerHTML = '<i class="fas fa-check mr-1"></i>Copiado!';
+                setTimeout(() => { copyPixBtn.innerHTML = '<i class="fas fa-copy mr-1"></i>Copiar'; }, 2000);
+            } catch {
+                // Sem acesso à área de transferência: seleciona o texto para a pessoa copiar
+                pixKeyInput.select();
+                showModal('Copie a chave', 'Selecionamos a chave Pix para você. Use Ctrl+C (ou segure e copie no celular).', 'info');
+            }
+        });
+
+        // =====================================================================
+        // Formulário de registro de doação
+        // =====================================================================
+        const donationForm = document.getElementById('donationForm');
+        const foodFields = document.getElementById('foodFields');
+        const pixFields = document.getElementById('pixFields');
+        const typeLabels = document.querySelectorAll('.donation-type');
+
+        donationForm.querySelectorAll('input[name="donationType"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const isPix = radio.value === 'pix' && radio.checked;
+                foodFields.classList.toggle('hidden', isPix);
+                pixFields.classList.toggle('hidden', !isPix);
+                typeLabels.forEach(label => {
+                    const checked = label.querySelector('input').checked;
+                    label.classList.toggle('border-brand-600', checked);
+                    label.classList.toggle('border-gray-200', !checked);
+                });
+            });
+        });
+
+        donationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const type = donationForm.querySelector('input[name="donationType"]:checked').value;
+            const name = document.getElementById('donorName').value.trim();
+
+            const donation = {
+                nome: name,
+                contato: document.getElementById('donorContact').value.trim(),
+                tipo: type,
+                kg: type === 'alimentos' ? Number(document.getElementById('donationKg').value) || null : null,
+                ponto: type === 'alimentos' ? document.getElementById('donationPoint').value : null,
+                valor: type === 'pix' ? Number(document.getElementById('donationValue').value) || null : null,
+                data: new Date().toISOString(),
+            };
+
+            if (CAMPAIGN.donationEndpoint) {
+                try {
+                    await fetch(CAMPAIGN.donationEndpoint, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(donation),
+                    });
+                } catch {
+                    showModal('Não foi possível enviar', 'Verifique sua conexão e tente novamente.', 'info');
+                    return;
+                }
+            }
+
+            try {
+                const saved = JSON.parse(localStorage.getItem('daka_doacoes')) || [];
+                saved.push(donation);
+                localStorage.setItem('daka_doacoes', JSON.stringify(saved));
+            } catch { /* armazenamento indisponível: segue sem lembrar */ }
+
+            showModal(
+                `Obrigado, ${name}!`,
+                type === 'pix'
+                    ? 'Sua doação via Pix foi registrada. Ela vai virar alimentos nas cestas deste Natal.'
+                    : `Sua doação foi registrada. Leve os alimentos até ${donation.ponto} até ${document.getElementById('deadlineLabel').textContent}. Feliz Natal!`
+            );
+            donationForm.reset();
+            donationForm.querySelector('input[value="alimentos"]').dispatchEvent(new Event('change'));
+        });
+
+        // =====================================================================
+        // Enfeites: pisca-pisca e neve
+        // =====================================================================
+        const lights = document.getElementById('lights');
+        const bulbCount = window.innerWidth < 640 ? 10 : 22;
+        lights.innerHTML = '<span class="bulb"></span>'.repeat(bulbCount);
+
+        const snow = document.getElementById('snow');
+        const flakeCount = window.innerWidth < 640 ? 14 : 28;
+        for (let i = 0; i < flakeCount; i++) {
+            const flake = document.createElement('i');
+            flake.className = 'fas fa-snowflake flake';
+            flake.style.left = `${Math.random() * 100}%`;
+            flake.style.fontSize = `${8 + Math.random() * 10}px`;
+            flake.style.animationDuration = `${9 + Math.random() * 10}s`;
+            flake.style.animationDelay = `${-Math.random() * 18}s`;
+            snow.appendChild(flake);
+        }
+
+        // =====================================================================
+        // Modal
+        // =====================================================================
+        const modal = document.getElementById('customModal');
+        const modalBox = document.getElementById('modalBox');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalIconContainer = document.getElementById('modalIconContainer');
+
+        function showModal(title, message, type = 'success') {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+
+            if (type === 'success') {
+                modalIcon.className = 'fas fa-gift text-2xl text-brand-600';
+                modalIconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-brand-100 mb-4';
+            } else {
+                modalIcon.className = 'fas fa-info text-2xl text-blue-600';
+                modalIconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 mb-4';
+            }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalBox.classList.remove('scale-95', 'opacity-0');
+                modalBox.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalBox.classList.remove('scale-100', 'opacity-100');
+            modalBox.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+        });
+
+        // =====================================================================
+        // Mobile Menu
+        // =====================================================================
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => menu.classList.toggle('hidden'));
+        menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => menu.classList.add('hidden')));
+    </script>
+</body>
+</html>
